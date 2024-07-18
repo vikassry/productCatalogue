@@ -33,7 +33,7 @@ public class ProductController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<ProductDto> getProduct(@PathVariable Long id) {
+    public ResponseEntity<ProductDto> getProduct(@PathVariable Long id) throws IllegalArgumentException {
         try {
             if (id < 1) {
                 throw new IllegalArgumentException("Id must be a positive integer");
@@ -45,9 +45,9 @@ public class ProductController {
             }
 
             return new ResponseEntity<>(from(p), headers, HttpStatus.OK);
-        }
-        catch (IllegalArgumentException ex){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (IllegalArgumentException ex){
+            throw ex;
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -61,7 +61,6 @@ public class ProductController {
         product.setId(id);
         return product;
     }
-
 
     private ProductDto from(Product p){
         ProductDto dto = new ProductDto();
