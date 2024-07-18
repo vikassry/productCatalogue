@@ -34,15 +34,21 @@ public class ProductController {
 
     @GetMapping("{id}")
     public ResponseEntity<ProductDto> getProduct(@PathVariable Long id) {
-        if (id < 1){
+        try {
+            if (id < 1) {
+                throw new IllegalArgumentException("Id must be a positive integer");
+            }
+            MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+            Product p = productService.getProductById(id);
+            if (p == null) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+            return new ResponseEntity<>(from(p), headers, HttpStatus.OK);
+        }
+        catch (IllegalArgumentException ex){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        MultiValueMap<String, String> headers = new LinkedMultiValueMap();
-        Product p = productService.getProductById(id);
-        if (p == null){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<>(from(p), headers, HttpStatus.OK);
     }
 
     @PostMapping
