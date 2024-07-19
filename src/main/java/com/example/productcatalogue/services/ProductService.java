@@ -1,5 +1,6 @@
 package com.example.productcatalogue.services;
 
+import com.example.productcatalogue.clients.FakeStoreClient;
 import com.example.productcatalogue.dtos.ProductDto;
 import com.example.productcatalogue.models.Category;
 import com.example.productcatalogue.models.FakeStoreProductDto;
@@ -20,14 +21,12 @@ public class ProductService implements IProductService {
     @Autowired
     private RestTemplateBuilder restTemplateBuilder;
 
+    @Autowired
+    private FakeStoreClient fakeStoreClient;
+
     @Override
     public Product getProductById(Long productId) {
-        ResponseEntity<FakeStoreProductDto> entity  = restTemplateBuilder.build()
-                .getForEntity("https://fakestoreapi.com/products/{id}", FakeStoreProductDto.class, productId);
-        if (entity.getBody() == null){
-            return null;
-        }
-        return from(entity.getBody());
+        return from(this.fakeStoreClient.getProductById(productId));
     }
 
     @Override
