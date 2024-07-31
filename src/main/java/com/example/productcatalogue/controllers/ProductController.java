@@ -2,6 +2,7 @@ package com.example.productcatalogue.controllers;
 
 import com.example.productcatalogue.dtos.CategoryDto;
 import com.example.productcatalogue.dtos.ProductDto;
+import com.example.productcatalogue.models.Category;
 import com.example.productcatalogue.models.Product;
 import com.example.productcatalogue.services.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +53,9 @@ public class ProductController {
     }
 
     @PostMapping
-    public ProductDto createProducts(@RequestBody ProductDto product) {
-        return product;
+    public ProductDto createProducts(@RequestBody ProductDto productDto) {
+        Product product = productService.createProduct(from(productDto));
+        return from(product);
     }
 
     @PutMapping("{id}")
@@ -74,4 +76,56 @@ public class ProductController {
         dto.setCategory(c);
         return dto;
     }
+
+    private Product from(ProductDto p){
+        Product product = new Product();
+        product.setId(p.getId());
+        product.setName(p.getName());
+        product.setPrice(p.getPrice());
+        product.setDescription(p.getDescription());
+
+        if (p.getCategory() != null) {
+            Category c = new Category();
+            c.setId(p.getCategory().getId());
+            c.setName(p.getCategory().getName());
+            c.setDescription(p.getCategory().getName());
+            product.setCategory(c);
+        }
+        return product;
+    }
 }
+
+/*
+curl --request POST \
+        --url http://localhost:8080/products \
+        --header 'Content-Type: application/json' \
+        --data '{"id":1, "name":"IPhone15","description":"Stash your iphone everyday","price":109.95,"category":{"id":1,"name":"iphone"}}
+        '
+
+curl --request POST \
+  --url https://api-gateway.payretailers.com/v2/paywalls \
+  --header 'Authorization: Basic MTIzNDU4MjI6OTYwZTNhNWIxYTE2ZGFiNTRmODBjMDVkNWZjODQzNzU0NjNjMDdlNDljODUyZTA0YWFmMDgzNjg2ZDI0M2E5ZQ==' \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"amount":"50",
+	"currency":"BRL",
+	"description":"alpari test 1",
+	"trackingId":"trx 11286571",
+	"notificationUrl":"https://money.dev.exinity.io/psp/callback",
+	"returnUrl":"https://trade-fxtm.dev.exinity.io",
+	"cancelUrl":"https://trade-fxtm.dev.exinity.io",
+	"paymentChannelTypeCode":"ONLINE",
+	"customer": {
+		"firstName":"Vitor De Goes",
+		"lastName":"Teixeira",
+		"email":"vitorgt1001@gmail.com",
+		"country":"BR",
+		"phone":"5511948780146",
+		"ip":"2804:14d:7e2b:8b68:c86c:f384:ad88:3246",
+		"address":"Street: Rua dos Ipes 1821 Cidade Jardim, subStreet: Apto 21,State:SP,City: Caraguatatuba, PostCode: 11664270"
+	},
+	"language":"pt"
+}
+'
+
+ */

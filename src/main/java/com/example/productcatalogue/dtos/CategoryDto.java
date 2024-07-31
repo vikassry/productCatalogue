@@ -10,5 +10,6 @@ import java.util.List;
 @Getter
 @Setter
 public class CategoryDto extends BaseModel {
+    private Long id;
     private String name;
 }

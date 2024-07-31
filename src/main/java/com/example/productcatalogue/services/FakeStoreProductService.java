@@ -1,22 +1,18 @@
 package com.example.productcatalogue.services;
 
 import com.example.productcatalogue.clients.FakeStoreClient;
-import com.example.productcatalogue.dtos.ProductDto;
 import com.example.productcatalogue.models.Category;
 import com.example.productcatalogue.models.FakeStoreProductDto;
 import com.example.productcatalogue.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class ProductService implements IProductService {
+public class FakeStoreProductService implements IProductService {
 
     @Autowired
     private RestTemplateBuilder restTemplateBuilder;
@@ -56,7 +52,7 @@ public class ProductService implements IProductService {
         Category c = new Category();
         c.setName(dto.getCategory());
 
-        Product product = new Product(dto.getId(), dto.getTitle(), dto.getDescription(), dto.getPrice());
+        Product product = new Product();
         product.setCategory(c);
 
         return product;
