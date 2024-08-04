@@ -1,5 +1,6 @@
 package com.example.productcatalogue.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -21,6 +22,7 @@ public class Product extends BaseModel {
     private Double price;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JsonBackReference
     private Category category;
 
     private Boolean isPrimeSpecific;
