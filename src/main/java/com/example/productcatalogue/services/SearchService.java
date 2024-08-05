@@ -6,9 +6,9 @@ import com.example.productcatalogue.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class SearchService {
@@ -19,7 +19,7 @@ public class SearchService {
     public Page<Product> SearchProduct(ProductSearchDto dto) {
         return productRepo.findProductsByName(
                 dto.getName(),
-                PageRequest.of(dto.getPageNumber(), dto.getPageSize())
+                PageRequest.of(dto.getPageNumber(), dto.getPageSize(), Sort.by("price", "id").descending())
         );
     }
 }

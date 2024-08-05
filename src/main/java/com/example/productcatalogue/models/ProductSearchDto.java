@@ -11,4 +11,5 @@ public class ProductSearchDto {
     private String name;
     private int pageNumber;
     private int pageSize;
+    private SortParam sort;
 }
