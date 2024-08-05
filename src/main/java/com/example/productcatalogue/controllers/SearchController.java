@@ -20,6 +20,6 @@ public class SearchController {
 
     @PostMapping()
     public Page<Product> search(@RequestBody ProductSearchDto dto){
-        return searchService.SearchProduct(dto);
+        return searchService.SearchProduct(dto.getName(), dto.getPageNumber(), dto.getPageSize(), dto.getSortParams());
     }
 }
