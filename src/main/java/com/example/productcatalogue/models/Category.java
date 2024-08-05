@@ -1,5 +1,6 @@
 package com.example.productcatalogue.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,6 +17,7 @@ import java.util.List;
 public class Category extends BaseModel {
     private String name;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Product> product;
 }
