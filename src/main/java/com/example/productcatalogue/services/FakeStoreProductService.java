@@ -6,12 +6,14 @@ import com.example.productcatalogue.models.FakeStoreProductDto;
 import com.example.productcatalogue.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Primary
 public class FakeStoreProductService implements IProductService {
 
     @Autowired
@@ -49,12 +51,16 @@ public class FakeStoreProductService implements IProductService {
     }
 
     private Product from(FakeStoreProductDto dto) {
+        Product p = new Product();
+        p.setId(dto.getId());
+        p.setName(dto.getTitle());
+        p.setDescription(dto.getDescription());
+        p.setPrice(dto.getPrice());
+        p.setImageUrl(dto.getImageUrl());
+
         Category c = new Category();
-        c.setName(dto.getCategory());
+        p.setCategory(c);
 
-        Product product = new Product();
-        product.setCategory(c);
-
-        return product;
+        return p;
     }
 }
